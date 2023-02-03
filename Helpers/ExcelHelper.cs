@@ -1,5 +1,6 @@
 ﻿using ClosedXML.Excel;
 using ExcelHelperProject.Attributes;
+using ExcelHelperProject.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,12 +15,13 @@ namespace ExcelHelperProject.Helpers
         {
             var wb = new XLWorkbook();
             var ws = wb.Worksheets.Add("Sheet1");
-            var cols = GetColumnList(typeof(T), out List<PropertyInfo> propertyInfoList);
-            
+            List<ColumnList> cols = GetColumnList(typeof(T), out List<PropertyInfo> propertyInfoList);
+
+
             // create columns
             for (var c = 0; c < cols.Count; c++)
-                ws.Cell(1, c + 1).Value = cols[c]; 
-            
+                ws.Cell(1, c + 1).Value = cols[c].Name;
+
             // create rows
             for (var r = 0; r < list.Count; r++)
             {
@@ -48,26 +50,29 @@ namespace ExcelHelperProject.Helpers
                 }
             }
 
-            using MemoryStream stream = new ();
+            using MemoryStream stream = new();
             wb.SaveAs(stream);
             return stream.ToArray();
         }
 
-        private static List<string> GetColumnList(Type type, out List<PropertyInfo> propertyInfoList)
+        private static List<ColumnList> GetColumnList(Type type, out List<PropertyInfo> propertyInfoList)
         {
             propertyInfoList = new List<PropertyInfo>();
             var propertList = type.GetProperties();
-            var resultList = new List<string>();
+            var resultList = new List<ColumnList>();
+
             foreach (var property in propertList)
             {
                 var attr = property.GetCustomAttributes<ExcelColumnNameAttribute>().FirstOrDefault();
                 if (attr != null)
                 {
-                    resultList.Add(attr.GetName());
+                    resultList.Add(new ColumnList { Name = attr.GetName(), Order = attr.GetOrder() });
                     propertyInfoList.Add(property);
                 }
             }
-            return resultList;
+            propertyInfoList = propertyInfoList.OrderBy(x => x.GetCustomAttributes<ExcelColumnNameAttribute>().FirstOrDefault().GetOrder()).ToList();
+            return resultList.OrderBy(x=>x.Order).ToList();
+
         }
     }
 }
