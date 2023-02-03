@@ -5,7 +5,6 @@ namespace ExcelHelperProject.Models
 {
     public class UserViewModel
     {
-        [ExcelColumnName("Id", 8)]
         public int Id { get; set; }
 
         [ExcelColumnName("Member No",1)]
