@@ -16,8 +16,8 @@ namespace ExcelHelperProject.Models
         [ExcelColumnName("LastName")]
         public string LastName { get; set; }
 
-        [ExcelColumnName("Is Marriage")]
-        public bool IsMarriage { get; set; }
+        [ExcelColumnName("Is Married")]
+        public bool IsMarried { get; set; }
 
         [ExcelColumnName("Age")]
         public int Age { get; set; }
