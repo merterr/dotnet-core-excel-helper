@@ -29,7 +29,16 @@ namespace ExcelHelperProject.Controllers
         [Route("[controller]/DownloadExcel")]
         public IActionResult CreateExcelFile()
         {
-            List<UserViewModel> list = new()
+            List<UserViewModel> list = MockData();
+            
+
+            var byteArr = ExcelHelper<UserViewModel>.CreateExcelFile(list);
+            return File(byteArr, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "users-file.xlsx");
+        }
+
+        private List<UserViewModel> MockData()
+        {
+            return new()
             {
                 new UserViewModel{
                     Id = 1,
@@ -55,8 +64,7 @@ namespace ExcelHelperProject.Controllers
 
             };
 
-            var byteArr = ExcelHelper<UserViewModel>.CreateExcelFile(list);
-            return File(byteArr, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "users-file.xlsx");
+             
         }
     }
 }
