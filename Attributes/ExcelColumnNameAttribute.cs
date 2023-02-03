@@ -10,14 +10,22 @@ namespace ExcelHelperProject.Attributes
     {
         private string Name { get; set; }
 
-        public ExcelColumnNameAttribute(string name)
+        private int Order { get; set; }
+
+        public ExcelColumnNameAttribute(string name, int order)
         {
             Name = name;
+            Order = order;
         }
 
         public string GetName()
         {
             return Name;
+        }
+
+        public int GetOrder()
+        {
+            return Order;
         }
     }
 }
