@@ -15,11 +15,12 @@ namespace ExcelHelperProject.Helpers
             var wb = new XLWorkbook();
             var ws = wb.Worksheets.Add("Sheet1");
             var cols = GetColumnList(typeof(T), out List<PropertyInfo> propertyInfoList);
-
-            for (var c = 0; c < cols.Count; c++)
-                ws.Cell(1, c + 1).Value = cols[c]; // header
             
-
+            // create columns
+            for (var c = 0; c < cols.Count; c++)
+                ws.Cell(1, c + 1).Value = cols[c]; 
+            
+            // create rows
             for (var r = 0; r < list.Count; r++)
             {
                 for (int i = 0; i < propertyInfoList.Count; i++)
