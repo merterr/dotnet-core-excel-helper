@@ -1,5 +1,7 @@
 # dotnet-core-excel-helper
 
+## Summary
+This helper convert a type of class list to excel table.
 
 ## Usage
 
